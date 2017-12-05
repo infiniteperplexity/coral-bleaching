@@ -1,15 +1,19 @@
 
 from netCDF4 import Dataset
 path = "C:/Users/M543015/Desktop/GitHub/coralbleaching/"
-file = "sst.mon.mean.nc"
+#file = "sst.mon.mean.nc"
+file = "sst.mnmean.nc"
 infile = Dataset(path+file,'r')
 import numpy as np
 sst = np.array(infile.variables['sst'][:])
 #lat goes from -89.5 to 89.5
 #lon goes from 0.5 to 359.5
-#time is days since 1981-1-1 (0-46294, 1522 obs)
+#time is days since 1891-1-1 (0-46294, 1522 obs)
 #sst is from -5 to 40 (1522, 180, 360)
 #1e20 is missing
+#18° S, 148° E
+
+infile.variables["sst"][:,27:28, 147:148]
 
 
 
