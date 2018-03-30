@@ -13,7 +13,12 @@ sst = np.array(infile.variables['sst'][:])
 #1e20 is missing
 #18° S, 148° E
 
-infile.variables["sst"][:,27:28, 147:148]
+series = infile.variables["sst"][:,53:54, 74:75]
+series = [item[0][0] for item in series.tolist()]
+series = [str(s)+"\n" for s in series]
+outfile = "series.txt"
+with open(path+outfile,'w') as f:
+	f.writelines(series)
 
 
 
