@@ -23,6 +23,7 @@ function animate() {
 	setInterval(()=>{
 		BLEACHED = (1/11)+(1/55)*series[period];
 		BLEACHED = Math.max(Math.min(BLEACHED,1),0);
+		//BLEACHED = 1;
 		p = (p+steps)%(hues*3);
 		if (p<hues) {
 			r-=steps;
@@ -34,11 +35,12 @@ function animate() {
 			b-=steps;
 			r+=steps;
 		}
-		COLOR = "rgb("+(r+(hues-r)*BLEACHED)+","+(g+(hues-g)*BLEACHED)+","+(b+(hues-b)*BLEACHED)+")";
+		COLOR = "rgb("+(r+(hues-r)*BLEACHED).toFixed(0)+","+(g+(hues-g)*BLEACHED).toFixed(0)+","+(b+(hues-b)*BLEACHED).toFixed(0)+")";
+		console.log(COLOR);
 		Voronoi.draw();
 		period = (period+1)%series.length;
 		let year = 1800+days[period]/365.25;
 		year = year.toFixed(2);
-		header.innerHTML = year;
+		header.innerHTML = "Year: " + year;
 	},100);
 }
