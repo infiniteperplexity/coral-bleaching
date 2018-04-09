@@ -10,9 +10,8 @@
 
 
 // should show year as well
-
-
 function animate() {
+	let header = document.getElementById("year");
 	Voronoi.init();
 	let hues = 256;
 	let steps = 4;
@@ -23,7 +22,6 @@ function animate() {
 	let period = 0;
 	setInterval(()=>{
 		BLEACHED = (1/11)+(1/55)*series[period];
-		console.log(BLEACHED);
 		BLEACHED = Math.max(Math.min(BLEACHED,1),0);
 		p = (p+steps)%(hues*3);
 		if (p<hues) {
@@ -39,5 +37,8 @@ function animate() {
 		COLOR = "rgb("+(r+(hues-r)*BLEACHED)+","+(g+(hues-g)*BLEACHED)+","+(b+(hues-b)*BLEACHED)+")";
 		Voronoi.draw();
 		period = (period+1)%series.length;
-	},25);
+		let year = 1800+days[period]/365.25;
+		year = year.toFixed(2);
+		header.innerHTML = year;
+	},100);
 }

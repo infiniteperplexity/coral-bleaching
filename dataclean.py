@@ -16,7 +16,8 @@ sst = np.array(infile.variables['sst'][:])
 
 series = infile.variables["sst"]
 time = infile.variables["time"][:]
-time = [item[0][0] for item in time.tolist()]
+time =  time.tolist()
+time = [str(s)+"\n" for s in time]
 
 series = infile.variables["sst"][:,53:54, 74:75]
 series = [item[0][0] for item in series.tolist()]
@@ -25,3 +26,7 @@ series = [str(s)+"\n" for s in series]
 outfile = "series.txt"
 with open(path+outfile,'w') as f:
 	f.writelines(series)
+
+outfile = "time.txt"
+with open(path+outfile,'w') as f:
+    f.writelines(time)
