@@ -55,9 +55,10 @@ var DRAWSITES = false;
 var BACKGROUND = "black";
 var BORDER = "black";
 
-
+console.log(series.length);
 function animate() {
 	Voronoi.init();
+	return;
 	let hues = 256;
 	let steps = 4;
 	let r = hues;
