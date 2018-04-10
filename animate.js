@@ -1,12 +1,27 @@
-/*
--5 to 40 mapped to 0 to 1
+let months = [];
+let averages = [];
+for (let i=0; i<12; i++) {
+	months.push([]);
+}
+for (let i=0; i<series.length; i++) {
+	months[i%12].push(series[i]);
+}
+for (let month of months) {
+	let sum = month.reduce((a,b)=>(a+b));
+	let len = month.length;
+	let avg = sum/len;
+	averages.push(avg);
+}
+let maxavg = averages.reduce((a,b)=>Math.max(a,b));
+dhweeks = [0,0];
+for (let i=0+2; i<series.length; i++) {
+	let month0 = Math.max(0,series[i-2]-maxavg-1);
+	let month1 = Math.max(0,series[i-1]-maxavg-1);
+	let month2 = Math.max(0,series[i-0]-maxavg-1);
+	let dhw = 4*(month0+month1+month2);
+	dhweeks.push(dhw);
+}
 
-
-
-
-
-
-*/
 
 
 // should show year as well
@@ -36,7 +51,6 @@ function animate() {
 			r+=steps;
 		}
 		COLOR = "rgb("+(r+(hues-r)*BLEACHED).toFixed(0)+","+(g+(hues-g)*BLEACHED).toFixed(0)+","+(b+(hues-b)*BLEACHED).toFixed(0)+")";
-		console.log(COLOR);
 		Voronoi.draw();
 		period = (period+1)%series.length;
 		let year = 1800+days[period]/365.25;
