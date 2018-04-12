@@ -3,6 +3,7 @@ from netCDF4 import Dataset
 path = "C:/Users/M543015/Desktop/GitHub/coralbleaching/"
 #file = "sst.mon.mean.nc"
 file = "sst.mnmean.nc"
+file = "cortadv5_TSA.nc"
 infile = Dataset(path+file,'r')
 import numpy as np
 sst = np.array(infile.variables['sst'][:])
@@ -30,3 +31,13 @@ with open(path+outfile,'w') as f:
 outfile = "time.txt"
 with open(path+outfile,'w') as f:
     f.writelines(time)
+
+
+#lat = 2592
+#lon = 7872
+dhw = infile.variables["TSA_DHW"][:,2592,7872]
+dhw = [str(s)+"\n" for s in dhw]
+
+outfile = "dhw.txt"
+with open(path+outfile,'w') as f:
+	f.writelines(dhw)
