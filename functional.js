@@ -6,14 +6,11 @@ function dhw2stress() {
 function stress2bleach(stress, bleaching) {
 }
 
-
-
-
 // bleaching level 0-1 => color 0-255
 function bleach2color(range) {
 }
 
-// color 0-255 => visually pleasing LEDs
+// color 0-255 => LED brightness 0-255
 function color2leds() {
 
 }
