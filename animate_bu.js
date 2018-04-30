@@ -27,7 +27,7 @@ for (let i=0+2; i<series.length; i++) {
 // should show year as well
 function animate() {
 	let header = document.getElementById("year");
-	init();
+	Voronoi.init();
 	let hues = 256;
 	let steps = 4;
 	let r = hues;
@@ -51,7 +51,7 @@ function animate() {
 			r+=steps;
 		}
 		COLOR = "rgb("+(r+(hues-r)*BLEACHED).toFixed(0)+","+(g+(hues-g)*BLEACHED).toFixed(0)+","+(b+(hues-b)*BLEACHED).toFixed(0)+")";
-		draw();
+		Voronoi.draw();
 		period = (period+1)%series.length;
 		let year = 1800+days[period]/365.25;
 		year = year.toFixed(2);
