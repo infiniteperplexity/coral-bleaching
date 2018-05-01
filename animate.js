@@ -28,7 +28,6 @@ for (let i=0+2; i<series.length; i++) {
 function animate() {
 	let header = document.getElementById("year");
 	init();
-	let hues = 256;
 	let steps = 4;
 	let r = hues;
 	let g = 0;

@@ -38,6 +38,9 @@ with open(path+outfile,'w') as f:
 dhw = infile.variables["TSA_DHW"][:,2592,7872]
 dhw = [str(s)+"\n" for s in dhw]
 
-outfile = "dhw.txt"
+time = infile.variables["time"][:]
+time = [str(s)+"\n" for s in time]
+
+outfile = "time.txt"
 with open(path+outfile,'w') as f:
-	f.writelines(dhw)
+	f.writelines(time)

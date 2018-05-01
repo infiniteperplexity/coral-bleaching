@@ -2,7 +2,7 @@ const WIDTH = 800;
 const HEIGHT = 600;
 const DOTS = 512;
 const RADIUS = 5;
-const RATE = 100;
+const RATE = 25;
 const HUES = 256;
 let canvas;
 
@@ -73,7 +73,7 @@ function dhw2dbleach(dhw) {
 }
 
 function bleach2dhealth(bleach) {
-	if (bleaching>=0.75) {
+	if (bleach>=0.75) {
 		// dying
 		return -0.05 // dies in 20 days
 	} else {
@@ -98,14 +98,14 @@ function animate() {
 	let header = document.getElementById("year");
 	init();
 	let steps = 4;
-	let r = hues;
+	let r = HUES-1;
 	let g = 0;
 	let b = 0;
 	let p = 0;
 	let period = 0;
 	setInterval(()=>{
 		p = (p+steps)%(HUES*3);
-		if (p<hues) {
+		if (p<HUES) {
 			r-=steps;
 			g+=steps;
 		} else if (p<(HUES*2)) {
@@ -115,19 +115,22 @@ function animate() {
 			b-=steps;
 			r+=steps;
 		}
+		r = HUES-1;
+		g = 0;
+		b = 0;
 		for (let d of dots) {
 			d.r = r;
 			d.g = g;
 			d.b = b;
 		} 
 		draw();
-		period = (period+1)%series.length;
-		let gap = (period===0) ? 7 : days[period]-days[period-1]
+		period = (period+1)%dhws.length;
+		let days = (period===0) ? 7 : time[period]-time[period-1]
 		let dhw = dhws[period];
 		for (let d of dots) {
 			if (d.dead===false) {
 				d.bleached = bounds(d.bleached+dhw2dbleach(dhw));
-				d.health = bounds(d.health+bleachd2dhealth(d.bleached));
+				d.health = bounds(d.health+bleach2dhealth(d.bleached));
 				if (d.health===0) {
 					d.dead = true;
 					d.bleached = 1;
@@ -137,7 +140,7 @@ function animate() {
 				d.health = 0;
 			}
 		} 
-		let year = 1800+days[period]/365.25;
+		let year = 1982+time[period]/365.25;
 		year = year.toFixed(0);
 		header.innerHTML = "Year: " + year;
 	},RATE);
