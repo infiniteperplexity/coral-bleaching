@@ -2,8 +2,9 @@ const WIDTH = 800;
 const HEIGHT = 600;
 const DOTS = 512;
 const RADIUS = 5;
-const RATE = 25;
+const RATE = 100;
 const HUES = 256;
+const STD = 0.25;
 let canvas;
 
 let dots = [];
@@ -11,10 +12,24 @@ let dot = {
 	bleached: 0,
 	health: 1,
 	dead: false,
+	parameter: 1,
 	r: HUES-1,
 	g: 0,
 	b: 0
 }
+
+function normal(mean, std) {
+	let r, u, v;
+	do {
+		u = 2*Math.random()-1;
+		v = 2*Math.random()-1;
+		r = u*u + v*v;
+	} while (r > 1 || r == 0);
+	let gauss = u * Math.sqrt(-2*Math.log(r)/r);
+	return (mean || 0) + gauss*(std || 1);
+}
+
+
 function init() {
 	canvas = document.getElementById("canvas");
 	canvas.height = HEIGHT;
@@ -25,7 +40,7 @@ function init() {
 	for (let i=0; i<DOTS; i++) {
 		let x = Math.floor(Math.random()*WIDTH);
 		let y = Math.floor(Math.random()*HEIGHT);
-		let d = {...dot, x: x, y: y};
+		let d = {...dot, x: x, y: y, parameter: 1+normal()};
 		dots.push(d);
 	}
 }
@@ -33,6 +48,9 @@ function init() {
 function hue(color, bleached) {
 	return (color+(HUES-color)*bleached).toFixed(0);
 }
+
+
+
 function draw() {
 	let ctx = canvas.getContext("2d");
 	ctx.fillStyle = "black";
@@ -46,25 +64,17 @@ function draw() {
 	}
 }
 
-// or should this be "probability of bleaching?"
-// if it's a constant thing, then we need a different constant per dot
-// if it's a probabilistic thing, not so much
-// even if it's probabilistic, I still need a fade in / out function
-// so it sounds like partial bleaching *is* potentially a thing
-// which leans towards a "random effects" model
-// oh wait, or fixed effects...but let's not do that for now
-
 // make everything per day
 function dhw2dbleach(dhw) {
 	if (dhw>=8.0) {
 		// severe bleaching
-		return 0.1; // bleach fully in 10 days
+		return 0.04; // bleach fully in 25 days
 	} else if (dhw>=4.0) {
 		// significant bleaching
-		return 0.04 // bleach fully in 25 days
+		return 0.02 // bleach fully in 50 days
 	} else if (dhw>=1.0) {
 		// thermal stress
-		return 0.02 // bleach fully in 50 days
+		return 0.01 // bleach fully in 100 days
 	} else {
 		// recovery?
 		return -0.02 // recover fully in 50 days
@@ -75,7 +85,7 @@ function dhw2dbleach(dhw) {
 function bleach2dhealth(bleach) {
 	if (bleach>=0.75) {
 		// dying
-		return -0.05 // dies in 20 days
+		return -0.004 // dies in 250 days
 	} else {
 		// slow recovery?
 		return 0.005 // recover fully in 500 days
@@ -125,12 +135,15 @@ function animate() {
 		} 
 		draw();
 		period = (period+1)%dhws.length;
-		let days = (period===0) ? 7 : time[period]-time[period-1]
+		let days = (period===0) ? 7 : time[period]-time[period-1];
+		console.log(days);
+		days = 7;
 		let dhw = dhws[period];
 		for (let d of dots) {
+			let p = d.parameter;
 			if (d.dead===false) {
-				d.bleached = bounds(d.bleached+dhw2dbleach(dhw));
-				d.health = bounds(d.health+bleach2dhealth(d.bleached));
+				d.bleached = bounds(d.bleached+p*days*dhw2dbleach(dhw));
+				d.health = bounds(d.health+p*days*bleach2dhealth(d.bleached));
 				if (d.health===0) {
 					d.dead = true;
 					d.bleached = 1;
