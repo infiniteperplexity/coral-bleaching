@@ -1,4 +1,4 @@
-let series = [
+let dhws = [
 0,
 0,
 0,
