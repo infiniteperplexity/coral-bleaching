@@ -44,3 +44,12 @@ time = [str(s)+"\n" for s in time]
 outfile = "time.txt"
 with open(path+outfile,'w') as f:
 	f.writelines(time)
+
+
+
+# LEVEL	SEVERITY
+# -1	% unknown
+# 0	No bleaching
+# 1	Mild (1-10% bleaching)
+# 2	Moderate (11-50% bleached)
+# 3	Severe (>50% bleached)
